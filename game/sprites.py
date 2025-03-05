@@ -62,7 +62,8 @@ class Player(pygame.sprite.Sprite):
 
 
     def collision(self):
-        if pygame.sprite.spritecollide(self, self.obstacle_sprites, False, pygame.sprite.collide_mask):
+        if pygame.sprite.spritecollide(self, self.obstacle_sprites, False, pygame.sprite.collide_mask)\
+        or self.rect.bottom <= 0 or self.rect.top >= HEIGHT:
             pygame.quit()
             sys.exit()
 
