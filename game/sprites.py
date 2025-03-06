@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from settings import *
 from random import randint
 
@@ -27,7 +27,7 @@ class BG(pygame.sprite.Sprite):
         
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, groups, scale_factor, obstacle_sprites):
+    def __init__(self, groups, scale_factor):
         super().__init__(groups)
         self.import_frames(scale_factor)
         self.frame_index = 0
@@ -40,8 +40,6 @@ class Player(pygame.sprite.Sprite):
 
         self.gravity = 500
         self.direction = 0
-
-        self.obstacle_sprites = obstacle_sprites
 
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -58,14 +56,6 @@ class Player(pygame.sprite.Sprite):
         self.direction += self.gravity * dt
         self.pos.y += self.direction * dt
         self.rect.y = round(self.pos.y)
-        self.collision()
-
-
-    def collision(self):
-        if pygame.sprite.spritecollide(self, self.obstacle_sprites, False, pygame.sprite.collide_mask)\
-        or self.rect.bottom <= 0 or self.rect.top >= HEIGHT:
-            pygame.quit()
-            sys.exit()
 
 
     def jump(self):
@@ -73,8 +63,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.jump()
 
 
@@ -111,6 +100,7 @@ class Obstacle(pygame.sprite.Sprite):
 
         self.pos = pygame.math.Vector2(self.rect.topleft)
         self.mask = pygame.mask.from_surface(self.image)
+
 
     def update(self, dt):
         self.pos.x -= 400*dt
